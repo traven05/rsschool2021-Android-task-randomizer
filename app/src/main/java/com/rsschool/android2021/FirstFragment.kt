@@ -5,8 +5,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+
 
 class FirstFragment : Fragment() {
 
@@ -29,11 +32,25 @@ class FirstFragment : Fragment() {
         val result = arguments?.getInt(PREVIOUS_RESULT_KEY)
         previousResult?.text = "Previous result: ${result.toString()}"
 
-        // TODO: val min = ...
-        // TODO: val max = ...
+        val min = view.findViewById<EditText>(R.id.min_value)
+        val max = view.findViewById<EditText>(R.id.max_value)
 
         generateButton?.setOnClickListener {
-            // TODO: send min and max to the SecondFragment
+            if (checkNum(min?.text.toString(), max?.text.toString())) {
+                (activity as? Communicator)?.openSecondFragment(min.text!!.toString().toInt(),max.text!!.toString().toInt())
+            }
+            else {
+                Toast.makeText(context, "Invalid input!", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    private fun checkNum(min: String, max: String) : Boolean {
+        return when {
+            min == "" || max == "" -> false
+            min.toInt() > max.toInt() -> false
+            min.toInt() > Int.MAX_VALUE || max.toInt() > Int.MAX_VALUE -> false
+            else -> true
         }
     }
 
