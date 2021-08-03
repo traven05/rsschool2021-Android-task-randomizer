@@ -48,8 +48,8 @@ class FirstFragment : Fragment() {
     private fun checkNum(min: String, max: String) : Boolean {
         return when {
             min == "" || max == "" -> false
+            min.length > 10 || max.length > 10 -> false
             min.toInt() > max.toInt() -> false
-            min.toInt() > Int.MAX_VALUE || max.toInt() > Int.MAX_VALUE -> false
             else -> true
         }
     }
